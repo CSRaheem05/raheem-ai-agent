@@ -1,59 +1,55 @@
-# Mini University AI Assistant
+# Raheem AI Assistant
 
-A very small learning project for understanding **Python + FastAPI** before adding:
+A local agentic AI assistant built with **Python, FastAPI, Qwen, Ollama, RAG, and MCP**.
 
-- LLM integration
-- RAG
-- AI Agents
-- MCP
+The project demonstrates how a Large Language Model can analyze a user's request, select the appropriate tool, retrieve information from documents, and interact with tools exposed through the Model Context Protocol.
 
-## 1. Create a virtual environment
+---
 
-Windows PowerShell:
+## Overview
 
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-```
+Raheem AI Assistant is a small AI engineering project created to explore the core concepts behind modern AI-powered applications.
 
-## 2. Install dependencies
+The assistant can:
 
-```powershell
-pip install -r requirements.txt
-```
+- Answer questions using a local LLM.
+- Upload and process PDF documents.
+- Retrieve relevant document content using RAG.
+- Generate embeddings and perform similarity search.
+- Select the appropriate tool based on the user's question.
+- Execute local tools.
+- Discover and execute MCP tools dynamically.
+- Run locally without requiring a paid LLM API.
 
-## 3. Run the server
+---
 
-```powershell
-uvicorn app.main:app --reload
-```
-
-## 4. Open in browser
-
-Home:
+## Architecture
 
 ```text
-http://127.0.0.1:8000/
-```
-
-Swagger API documentation:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
-## Current endpoints
-
-- `GET /`
-- `POST /ask`
-
-Example request body for `/ask`:
-
-```json
-{
-  "question": "What is RAG?"
-}
-```
-
-At this stage, `/ask` returns a placeholder answer.
-We will connect a real LLM in the next step.
+                         User
+                          │
+                          ▼
+                     Frontend
+                          │
+                          ▼
+                     FastAPI
+                          │
+                          ▼
+                      Qwen LLM
+                          │
+                    Tool Selection
+                 ┌────────┼────────┐
+                 │        │        │
+                 ▼        ▼        ▼
+                RAG   Local Tool   MCP
+                 │                 │
+                 │            MCP Client
+                 │                 │
+                 │            MCP Server
+                 │                 │
+                 ▼                 ▼
+             PDF Search           Tools
+                 │                 │
+                 └────────┬────────┘
+                          ▼
+                     Final Answer
